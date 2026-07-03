@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Katta Nitish Goud — AI/ML Engineer</title>
+
+<!--
+  Portfolio for Katta Nitish Goud.
+  - Content lives inline in each <section> below — edit text directly there.
+  - Colors / fonts are defined as CSS variables at the top of <style>.
+  - The P.04/P.05/P.06 project descriptions are short since the resume
+    didn't include detailed metrics for those — flesh them out if you want.
+-->
+
+<style>
+  :root{
+    --void:#05070c;
+    --panel:#0d1420;
+    --ink:#e9edf2;
+    --ink-dim:#93a1b0;
+    --line:#1c2632;
+    --teal:#5be3c9;
+    --copper:#ff9a5c;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    cursor:default;
+  }
+
+  ::selection{ background:var(--teal); color:var(--void); }
+
+  #scene{
+    position:fixed;
+    top:0; left:0;
+    width:100vw; height:100vh;
+    z-index:0;
+    display:block;
+  }
+
+  .vignette{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(2,3,6,0.75) 100%),
+      linear-gradient(to bottom, rgba(2,3,6,0.55) 0%, rgba(2,3,6,0) 12%, rgba(2,3,6,0) 88%, rgba(2,3,6,0.65) 100%);
+  }
+
+  main{ position:relative; z-index:2; }
+
+  /* ---------- HUD chrome ---------- */
+
+  .mark{
+    position:fixed; top:28px; left:32px; z-index:5;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:.15em;
+    color:var(--ink-dim);
+  }
+  .mark span{ color:var(--teal); }
+
+  .telemetry{
+    position:fixed; bottom:24px; left:32px; z-index:5;
+    font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
+    color:var(--ink-dim);
+    line-height:1.6;
+  }
+  .telemetry b{ color:var(--teal); font-weight:500; }
+
+  nav.dots{
+    position:fixed; top:50%; right:28px; transform:translateY(-50%);
+    z-index:5;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  nav.dots button{
+    all:unset;
+    width:9px; height:9px; border-radius:50%;
+    border:1px solid var(--ink-dim);
+    cursor:pointer;
+    position:relative;
+    transition:background .25s, border-color .25s, transform .25s;
+  }
+  nav.dots button:hover, nav.dots button:focus-visible{
+    border-color:var(--teal);
+    transform:scale(1.3);
+    outline:none;
+  }
+  nav.dots button.active{
+    background:var(--teal);
+    border-color:var(--teal);
+  }
+  nav.dots button .label{
+    position:absolute; right:20px; top:50%; transform:translateY(-50%);
+    font-family:var(--font-mono); font-size:10px; letter-spacing:.1em;
+    color:var(--ink-dim);
+    white-space:nowrap;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s;
+  }
+  nav.dots button:hover .label{ opacity:1; }
+
+  @media (max-width:760px){
+    nav.dots{ display:none; }
+    .telemetry{ display:none; }
+  }
+
+  /* ---------- sections ---------- */
+
+  section{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:0 8vw;
+    position:relative;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity .9s cubic-bezier(.16,.8,.24,1), transform .9s cubic-bezier(.16,.8,.24,1);
+  }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:.2em;
+    color:var(--teal);
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:inline-block;
+  }
+
+  /* HERO */
+  #hero{
+    justify-content:center;
+    text-align:center;
+    flex-direction:column;
+    align-items:center;
+  }
+  .hero-name{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(3rem, 10vw, 7.5rem);
+    letter-spacing:-.02em;
+    line-height:.95;
+  }
+  .hero-tagline{
+    margin-top:22px;
+    max-width:560px;
+    color:var(--ink-dim);
+    font-size:clamp(1rem, 1.6vw, 1.15rem);
+    line-height:1.6;
+  }
+  .scroll-cue{
+    position:absolute;
+    bottom:48px; left:50%; transform:translateX(-50%);
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.25em;
+    color:var(--ink-dim);
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .scroll-cue .chev{
+    width:1px; height:34px;
+    background:linear-gradient(var(--teal), transparent);
+    animation:cue 1.8s ease-in-out infinite;
+  }
+  @keyframes cue{
+    0%{ transform:scaleY(0); transform-origin:top; opacity:0;}
+    40%{ transform:scaleY(1); transform-origin:top; opacity:1;}
+    60%{ transform:scaleY(1); transform-origin:bottom; opacity:1;}
+    100%{ transform:scaleY(0); transform-origin:bottom; opacity:0;}
+  }
+
+  /* ABOUT */
+  #about .about-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:6vw;
+    max-width:1100px;
+    width:100%;
+    align-items:start;
+  }
+  #about h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2rem, 4vw, 3.2rem);
+    line-height:1.1;
+    margin-bottom:22px;
+  }
+  #about p{
+    color:var(--ink-dim);
+    font-size:1.02rem;
+    line-height:1.8;
+    max-width:46ch;
+  }
+  .spec-sheet{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--ink-dim);
+    border-left:1px solid var(--line);
+    padding-left:24px;
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .spec-sheet .num{
+    color:var(--teal);
+    font-size:1.6rem;
+    display:block;
+    font-family:var(--font-display);
+  }
+
+  @media (max-width:760px){
+    #about .about-grid{ grid-template-columns:1fr; }
+  }
+
+  /* PROJECTS */
+  .project{
+    justify-content:flex-start;
+  }
+  .project-inner{
+    display:grid;
+    grid-template-columns:.48fr .52fr;
+    gap:4vw;
+    width:100%;
+    max-width:1280px;
+    align-items:center;
+  }
+  .project:nth-of-type(even) .project-inner{
+    direction:rtl;
+  }
+  .project:nth-of-type(even) .project-inner > *{
+    direction:ltr;
+  }
+  .p-index{
+    font-family:var(--font-mono);
+    color:var(--teal);
+    font-size:13px;
+    letter-spacing:.15em;
+    margin-bottom:16px;
+    display:block;
+  }
+  .project h3{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(1.6rem, 3vw, 2.4rem);
+    margin-bottom:18px;
+  }
+  .project .personal{
+    font-style:italic;
+    color:var(--ink);
+    opacity:.9;
+    font-size:.94rem;
+    line-height:1.6;
+    max-width:46ch;
+    padding-left:14px;
+    border-left:2px solid var(--teal);
+    margin-bottom:20px;
+  }
+  .project .problem, .project .solution{
+    color:var(--ink-dim);
+    line-height:1.75;
+    max-width:48ch;
+    margin-bottom:14px;
+    font-size:.98rem;
+  }
+  .project .solution{ margin-bottom:20px; }
+  .tag-label{
+    font-family:var(--font-mono);
+    font-style:normal;
+    font-size:10.5px;
+    letter-spacing:.08em;
+    color:var(--copper);
+    margin-right:2px;
+  }
+  .tags{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tags span{
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    letter-spacing:.06em;
+    color:var(--ink-dim);
+    border:1px solid var(--line);
+    padding:6px 10px;
+    border-radius:2px;
+  }
+
+  /* ---- architecture-diagram cards ---- */
+  .p-visual{
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:
+      linear-gradient(160deg, rgba(91,227,201,0.08), rgba(255,154,92,0.03) 60%),
+      var(--panel);
+    position:relative;
+    overflow:hidden;
+    display:block;
+    text-decoration:none;
+    min-height:420px;
+    transition:border-color .3s, background .3s;
+  }
+  .p-visual:hover{ border-color:var(--teal); background:linear-gradient(160deg, rgba(91,227,201,0.16), rgba(255,154,92,0.05) 60%), var(--panel); }
+  .p-visual:hover .repo-pill{ color:var(--teal); border-color:var(--teal); }
+  .p-visual::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:28px 28px;
+    opacity:.28;
+  }
+  .repo-pill{
+    position:absolute; top:16px; right:16px; z-index:2;
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.08em;
+    color:var(--ink-dim);
+    border:1px solid var(--line);
+    padding:5px 10px;
+    border-radius:20px;
+    background:rgba(5,7,12,0.55);
+    transition:color .25s, border-color .25s;
+  }
+
+  .arch{
+    position:relative; z-index:1;
+    width:100%; height:100%;
+    padding:52px 22px 22px;
+    font-family:var(--font-mono);
+    font-size:13.5px;
+    line-height:1.35;
+    display:flex; flex-direction:column; align-items:center;
+    gap:0;
+  }
+  .arch.dense{ font-size:11.5px; padding-top:46px; }
+  .arch .n{
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:8px 14px;
+    background:rgba(9,13,20,0.7);
+    color:var(--ink);
+    white-space:nowrap;
+    text-align:center;
+  }
+  .arch .n.llm{ border-color:rgba(91,227,201,0.55); color:var(--teal); }
+  .arch .n.decide{ border-color:rgba(255,154,92,0.55); color:var(--copper); }
+  .arch .n.data{ border-color:var(--line); color:var(--ink-dim); }
+  .arch .n small{ display:block; font-size:.76em; opacity:.75; margin-top:2px; font-weight:normal; }
+  .arch .arrow{ color:#3a4658; font-size:15px; line-height:1.2; margin:3px 0; }
+  .arch .row{ display:flex; gap:9px; align-items:flex-start; justify-content:center; flex-wrap:wrap; margin:3px 0; }
+  .arch .branch{ display:flex; flex-direction:column; align-items:center; gap:5px; }
+  .arch .note{ font-size:.72em; color:var(--ink-dim); opacity:.8; margin-top:4px; text-align:center; max-width:160px; }
+  .arch .loopback{ font-size:.76em; color:var(--copper); opacity:.9; margin:3px 0; text-align:center; }
+  .arch .bar{ width:1px; background:var(--line); align-self:center; }
+
+  /* SKILLS */
+  #skills{ flex-direction:column; align-items:flex-start; }
+  #skills h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2rem, 4vw, 3.2rem);
+    margin-bottom:48px;
+  }
+  .skill-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:36px;
+    width:100%;
+    max-width:1100px;
+  }
+  .skill-cat .eyebrow{ margin-bottom:14px; }
+  .skill-cat .tags span{ font-size:11px; }
+
+  /* CONTACT */
+  #contact{
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    justify-content:center;
+  }
+  #contact h2{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2.4rem, 7vw, 5rem);
+    line-height:1;
+    margin-bottom:26px;
+  }
+  #contact p{ color:var(--ink-dim); margin-bottom:34px; max-width:44ch; }
+  .contact-links{
+    display:flex; gap:28px; flex-wrap:wrap; justify-content:center;
+    font-family:var(--font-mono); font-size:13px; letter-spacing:.05em;
+  }
+  .contact-links a{
+    color:var(--ink);
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:4px;
+    transition:color .25s, border-color .25s;
+  }
+  .contact-links a:hover, .contact-links a:focus-visible{
+    color:var(--teal); border-color:var(--teal);
+    outline:none;
+  }
+  footer{
+    text-align:center;
+    padding:40px 0 60px;
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    color:var(--ink-dim);
+    letter-spacing:.08em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ transition:none; opacity:1; transform:none; }
+    .scroll-cue .chev{ animation:none; }
+  }
+
+  @media (max-width:760px){
+    .project-inner{ grid-template-columns:1fr !important; direction:ltr !important; }
+    .p-visual{ order:-1; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="scene"></canvas>
+<div class="vignette"></div>
+
+<div class="mark">K<span>·</span>NG // PORTFOLIO</div>
+<div class="telemetry" id="telemetry">
+  Z-DEPTH&nbsp;&nbsp;<b id="tele-z">0000</b>m<br>
+  SECTOR&nbsp;&nbsp;<b id="tele-sec">HERO</b>
+</div>
+
+<nav class="dots" id="dotNav"></nav>
+
+<main>
+
+  <section id="hero" data-label="Hero">
+    <span class="eyebrow reveal in">AI / ML Engineering Student</span>
+    <div class="hero-name">KATTA NITISH<br>GOUD</div>
+    <p class="hero-tagline reveal in">
+      I build agentic AI systems, multi-stage RAG pipelines, and local LLM
+      deployments — end to end, from data collection to a working interface.
+    </p>
+    <div class="scroll-cue"><span>SCROLL</span><span class="chev"></span></div>
+  </section>
+
+  <section id="about" data-label="About">
+    <div class="about-grid">
+      <div class="reveal">
+        <span class="eyebrow">// 01 — About</span>
+        <h2>Built for depth,<br>not decoration.</h2>
+        <p>
+          B.Tech CSE (AI &amp; ML) student focused on end-to-end AI systems —
+          from data collection and model training to API deployment and
+          user-facing interfaces. Most of my work runs on fully local LLM
+          stacks: multi-agent RAG pipelines, self-evaluating retrieval loops,
+          and the tooling to benchmark and deploy them without relying on
+          paid APIs.
+        </p>
+      </div>
+      <div class="spec-sheet reveal">
+        <div><span class="num">73%</span>Answer-relevancy gain from a self-correcting RAG loop</div>
+        <div><span class="num">100%</span>Routing accuracy reached with cross-encoder reranking</div>
+        <div><span class="num">06</span>Agentic AI systems shipped, start to finish</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="project" data-label="Roast Bot">
+    <div class="project-inner">
+      <div class="reveal">
+        <span class="p-index">P.01</span>
+        <h3>Roast Bot</h3>
+        <p class="personal">Nothing special — but this is the project that pulled me into AI. Everything else here started with this.</p>
+        <p class="problem"><span class="tag-label">THE PROBLEM —</span>I wanted to see if I could get an LLM to talk back with actual personality, instead of a flat, polite response.</p>
+        <p class="solution"><span class="tag-label">WHAT I BUILT —</span>A small Streamlit app that feeds user input into a few-shot prompt telling Gemini to roast it, with a fallback to a personal API key when the shared free quota runs out.</p>
+        <div class="tags"><span>STREAMLIT</span><span>GEMINI API</span></div>
+      </div>
+      <a class="p-visual reveal" href="https://github.com/Katta-Nitish/Roast-Bot-Context-Aware-Conversational-AI" target="_blank" rel="noopener" aria-label="View Roast Bot on GitHub. Architecture: user input flows through a few-shot prompt into Gemini 2.5 Flash, producing a roast output.">
+        <span class="repo-pill">VIEW REPO ↗</span>
+        <div class="arch" aria-hidden="true">
+          <div class="n data">User Input</div>
+          <div class="arrow">▼</div>
+          <div class="n data">Few-shot Prompt<small>sarcastic persona</small></div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Gemini 2.5 Flash</div>
+          <div class="arrow">▼</div>
+          <div class="n data">Roast Output</div>
+          <div class="note">falls back to a personal API key when the shared quota runs out</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="project" data-label="Study Buddy">
+    <div class="project-inner">
+      <div class="reveal">
+        <span class="p-index">P.02</span>
+        <h3>Study Buddy</h3>
+        <p class="personal">First time I built something that decides which tool to use, instead of just deciding what to say.</p>
+        <p class="problem"><span class="tag-label">THE PROBLEM —</span>Generic chatbots either make up answers or dump a whole document back at you instead of actually teaching from it.</p>
+        <p class="solution"><span class="tag-label">WHAT I BUILT —</span>An agent that reads a student's own uploaded notes and picks between a focused lookup tool or a broad summary tool depending on the question — and still works without an API key, using local embeddings.</p>
+        <div class="tags"><span>LLAMAINDEX</span><span>REACT AGENT</span><span>CHROMADB</span></div>
+      </div>
+      <a class="p-visual reveal" href="https://github.com/Katta-Nitish/Study-Buddy-Agentic-AI-Tutoring-Assistant" target="_blank" rel="noopener" aria-label="View Study Buddy on GitHub. Architecture: uploaded notes are indexed, then an agent picks between a vector lookup tool or a summary tool before generating an answer.">
+        <span class="repo-pill">VIEW REPO ↗</span>
+        <div class="arch" aria-hidden="true">
+          <div class="n data">Uploaded Notes<small>PDF / TXT / DOCX</small></div>
+          <div class="arrow">▼</div>
+          <div class="n data">Index<small>BGE-small + ChromaDB</small></div>
+          <div class="arrow">▼</div>
+          <div class="n decide">Agent<small>picks a tool</small></div>
+          <div class="arrow">▼</div>
+          <div class="row">
+            <div class="branch"><div class="n">Vector Tool<small>focused lookup</small></div></div>
+            <div class="branch"><div class="n">Summary Tool<small>broad questions</small></div></div>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Gemini<small>or local LLM</small></div>
+          <div class="arrow">▼</div>
+          <div class="n data">Answer</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="project" data-label="Internet Researcher Agent">
+    <div class="project-inner">
+      <div class="reveal">
+        <span class="p-index">P.03</span>
+        <h3>Internet Researcher Agent</h3>
+        <p class="personal">The first project where I stopped answering from memory and started building something that actually goes and checks.</p>
+        <p class="problem"><span class="tag-label">THE PROBLEM —</span>LLMs answer from training data, which is fine until you ask about something recent or specific.</p>
+        <p class="solution"><span class="tag-label">WHAT I BUILT —</span>A pipeline that searches the live web, embeds the results locally, drafts a sourced report, then keeps the follow-up conversation grounded strictly in that report instead of general knowledge.</p>
+        <div class="tags"><span>LANGGRAPH</span><span>TAVILY</span><span>CHROMADB</span><span>GEMINI</span></div>
+      </div>
+      <a class="p-visual reveal" href="https://github.com/Katta-Nitish/internet-researcher-agent" target="_blank" rel="noopener" aria-label="View Internet Researcher Agent on GitHub. Architecture: a query triggers a web search, results are embedded and used to draft a sourced report, then a follow-up chat stays grounded in that report.">
+        <span class="repo-pill">VIEW REPO ↗</span>
+        <div class="arch" aria-hidden="true">
+          <div class="n data">Query</div>
+          <div class="arrow">▼</div>
+          <div class="n data">Web Search<small>Tavily</small></div>
+          <div class="arrow">▼</div>
+          <div class="n data">Embed Results<small>BGE + Chroma (in-memory)</small></div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Draft Report<small>Gemini 2.5 Flash</small></div>
+          <div class="arrow">▼</div>
+          <div class="n data">Report + Sources</div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Follow-up Chat<small>grounded in report</small></div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="project" data-label="Self-Improving RAG Agent">
+    <div class="project-inner">
+      <div class="reveal">
+        <span class="p-index">P.04</span>
+        <h3>Self-Improving RAG Agent</h3>
+        <p class="personal">This is where I stopped babysitting the model's answers and let it check its own work.</p>
+        <p class="problem"><span class="tag-label">THE PROBLEM —</span>A RAG system's first answer is often mediocre, and most setups have no way to notice that or try again.</p>
+        <p class="solution"><span class="tag-label">WHAT I BUILT —</span>A retrieval loop that grades its own answer with a second model, and automatically retries with a wider search when the score is too low — running fully offline, at zero API cost.</p>
+        <div class="tags"><span>LANGGRAPH</span><span>FAISS</span><span>RAGAS</span><span>OLLAMA</span></div>
+      </div>
+      <a class="p-visual reveal" href="https://github.com/Katta-Nitish/self-improving-rag-agent" target="_blank" rel="noopener" aria-label="View Self-Improving RAG Agent on GitHub. Architecture: retrieved context is used to generate an answer, a second model evaluates the score, and low scores trigger a retry with wider retrieval before producing a final answer.">
+        <span class="repo-pill">VIEW REPO ↗</span>
+        <div class="arch" aria-hidden="true">
+          <div class="n data">PDF Upload</div>
+          <div class="arrow">▼</div>
+          <div class="n data">FAISS Index</div>
+          <div class="arrow">▼</div>
+          <div class="n data">Retrieve<small>top-k</small></div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Generate<small>DeepSeek-R1:8b</small></div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Evaluate<small>Gemma3:12b · RAGAS</small></div>
+          <div class="arrow">▼</div>
+          <div class="row">
+            <div class="branch">
+              <div class="n decide">score &lt; 0.7</div>
+              <div class="note">retry, k: 6 → 8 → 12<br>loops back to Retrieve</div>
+            </div>
+            <div class="branch"><div class="n decide">score ≥ 0.7</div></div>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="n data">Final Answer</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="project" data-label="Agentic RAG System">
+    <div class="project-inner">
+      <div class="reveal">
+        <span class="p-index">P.05</span>
+        <h3>Agentic RAG System</h3>
+        <p class="personal">The project where I actually learned to make an agent say "I don't know" instead of guessing.</p>
+        <p class="problem"><span class="tag-label">THE PROBLEM —</span>Most RAG demos retrieve-then-answer no matter what — even for ambiguous questions or ones the documents just don't cover.</p>
+        <p class="solution"><span class="tag-label">WHAT I BUILT —</span>A router that chooses between clarifying, retrieving, calling a tool, answering directly, or refusing outright — reranking results before they ever reach the model, and refusing when the evidence doesn't support an answer.</p>
+        <div class="tags"><span>LANGGRAPH</span><span>FAISS</span><span>CROSS-ENCODERS</span><span>DOCKER</span></div>
+      </div>
+      <a class="p-visual reveal" href="https://github.com/Katta-Nitish/agentic-rag-system" target="_blank" rel="noopener" aria-label="View Agentic RAG System on GitHub. Architecture: a query is rewritten and routed to one of five actions — clarify, retrieve, use a tool, answer directly, or refuse — with retrieved or tool results evaluated before a final response is generated.">
+        <span class="repo-pill">VIEW REPO ↗</span>
+        <div class="arch dense" aria-hidden="true">
+          <div class="n data">User Query</div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Query Rewriter<small>qwen3:4b</small></div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Query Analyzer<small>gemma3:12b</small></div>
+          <div class="arrow">▼</div>
+          <div class="row">
+            <div class="branch"><div class="n decide">Clarify</div></div>
+            <div class="branch"><div class="n decide">Retrieve</div></div>
+            <div class="branch"><div class="n decide">Tool</div></div>
+            <div class="branch"><div class="n decide">Direct Ans</div></div>
+            <div class="branch"><div class="n decide">Refuse</div></div>
+          </div>
+          <div class="row">
+            <div class="branch"><div class="n data"><small>Retrieve</small>FAISS top-20 → Rerank → top-6</div></div>
+            <div class="branch"><div class="n data"><small>Tool</small>arxiv / calc / code_exec</div></div>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Evaluator<small>llama3:8b</small></div>
+          <div class="arrow">▼</div>
+          <div class="row">
+            <div class="branch"><div class="n">Response</div></div>
+            <div class="branch"><div class="n">Refusal</div></div>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="n llm">Response Generator<small>qwen3.5:9b</small></div>
+          <div class="arrow">▼</div>
+          <div class="n data">Answer + Observability Panel</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="project" data-label="Local LLM Performance Predictor">
+    <div class="project-inner">
+      <div class="reveal">
+        <span class="p-index">P.06</span>
+        <h3>Local LLM Performance Predictor</h3>
+        <p class="personal">The project where I stopped guessing whether a model would fit on my machine and started measuring it.</p>
+        <p class="problem"><span class="tag-label">THE PROBLEM —</span>Downloading a big local model and hoping it doesn't choke your machine is a bad way to find out it won't fit.</p>
+        <p class="solution"><span class="tag-label">WHAT I BUILT —</span>A benchmarking harness that measured real latency, RAM, and VRAM across 8 local models, trained regression models on the results, and now predicts hardware risk through a small API and dashboard before you ever load the model.</p>
+        <div class="tags"><span>SCIKIT-LEARN</span><span>FASTAPI</span><span>STREAMLIT</span></div>
+      </div>
+      <a class="p-visual reveal" href="https://github.com/Katta-Nitish/local-llm-performance-predictor" target="_blank" rel="noopener" aria-label="View Local LLM Performance Predictor on GitHub. Architecture: a benchmark harness collects 288 runs across 8 models, features are engineered, regression models predict latency, RAM, and VRAM, and predictions are served through a FastAPI backend and Streamlit dashboard.">
+        <span class="repo-pill">VIEW REPO ↗</span>
+        <div class="arch" aria-hidden="true">
+          <div class="n data">Benchmark Harness<small>8 models × prompts × context</small></div>
+          <div class="arrow">▼</div>
+          <div class="n data">288 Runs<small>latency / RAM / VRAM</small></div>
+          <div class="arrow">▼</div>
+          <div class="n data">Feature Engineering</div>
+          <div class="arrow">▼</div>
+          <div class="row">
+            <div class="branch"><div class="n">Ridge<small>Latency</small></div></div>
+            <div class="branch"><div class="n">Random Forest<small>RAM</small></div></div>
+            <div class="branch"><div class="n">Random Forest<small>VRAM</small></div></div>
+          </div>
+          <div class="arrow">▼</div>
+          <div class="n data">FastAPI /predict</div>
+          <div class="arrow">▼</div>
+          <div class="n data">Streamlit Risk Dashboard</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section id="skills" data-label="Skills">
+    <span class="eyebrow reveal">// 02 — Stack</span>
+    <h2 class="reveal">What I build with.</h2>
+    <div class="skill-grid">
+      <div class="skill-cat reveal">
+        <span class="eyebrow">Languages</span>
+        <div class="tags"><span>PYTHON</span><span>SQL</span></div>
+      </div>
+      <div class="skill-cat reveal">
+        <span class="eyebrow">Frameworks</span>
+        <div class="tags"><span>LANGCHAIN</span><span>LANGGRAPH</span><span>FASTAPI</span><span>STREAMLIT</span><span>PYDANTIC V2</span></div>
+      </div>
+      <div class="skill-cat reveal">
+        <span class="eyebrow">AI / ML</span>
+        <div class="tags"><span>RAG</span><span>AGENTIC AI</span><span>PROMPT ENGINEERING</span><span>RAGAS EVAL</span><span>LOCAL LLM (OLLAMA)</span></div>
+      </div>
+      <div class="skill-cat reveal">
+        <span class="eyebrow">Libraries</span>
+        <div class="tags"><span>NUMPY</span><span>PANDAS</span><span>LLAMAINDEX</span><span>HUGGINGFACE</span><span>CHROMADB</span><span>FAISS</span></div>
+      </div>
+      <div class="skill-cat reveal">
+        <span class="eyebrow">DevOps</span>
+        <div class="tags"><span>DOCKER</span><span>ASYNC PYTHON</span><span>PYTEST</span><span>GIT</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" data-label="Contact">
+    <span class="eyebrow reveal">// 03 — Contact</span>
+    <h2 class="reveal">Let's build<br>something.</h2>
+    <p class="reveal">Open to AI/ML roles and interesting agentic-systems problems. Reach out — I read everything myself.</p>
+    <div class="contact-links reveal">
+      <a href="mailto:nitishgoud69@gmail.com">nitishgoud69@gmail.com</a>
+      <a href="https://github.com/Katta-Nitish" target="_blank" rel="noopener">GITHUB</a>
+      <a href="https://www.linkedin.com/in/katta-nitish-goud" target="_blank" rel="noopener">LINKEDIN</a>
+    </div>
+  </section>
+
+  <footer>© <span id="year"></span> Katta Nitish Goud</footer>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ================= THREE.JS SCENE ================= */
+
+const canvas = document.getElementById('scene');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+const scene = new THREE.Scene();
+const bgColor = 0x05070c;
+scene.background = new THREE.Color(bgColor);
+scene.fog = new THREE.FogExp2(bgColor, 0.0016);
+
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 4000);
+camera.position.set(0,0,0);
+
+const TEAL = 0x5be3c9;
+const COPPER = 0xff9a5c;
+
+/* ---- lights ---- */
+scene.add(new THREE.AmbientLight(0x2a3340, 1.2));
+const coreLight = new THREE.PointLight(TEAL, 3.2, 900, 2);
+coreLight.position.set(0,0,-260);
+scene.add(coreLight);
+const copperLight = new THREE.PointLight(COPPER, 1.4, 1200, 2);
+copperLight.position.set(200,-80,-1600);
+scene.add(copperLight);
+
+/* ---- starfield ---- */
+const STAR_COUNT = 2600;
+const starGeo = new THREE.BufferGeometry();
+const starPos = new Float32Array(STAR_COUNT*3);
+const TOTAL_DEPTH = 9200;
+for(let i=0;i<STAR_COUNT;i++){
+  starPos[i*3]   = (Math.random()-0.5)*1800;
+  starPos[i*3+1] = (Math.random()-0.5)*1200;
+  starPos[i*3+2] = -Math.random()*TOTAL_DEPTH;
+}
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
+const starMat = new THREE.PointsMaterial({
+  color:0xbfd3e0, size:1.6, transparent:true, opacity:0.75,
+  blending:THREE.AdditiveBlending, depthWrite:false
+});
+const stars = new THREE.Points(starGeo, starMat);
+scene.add(stars);
+
+/* ---- glow sprite helper (fake bloom) ---- */
+function makeGlowTexture(){
+  const size = 256;
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
+  g.addColorStop(0,'rgba(255,255,255,0.9)');
+  g.addColorStop(0.4,'rgba(180,255,240,0.35)');
+  g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0,0,size,size);
+  return new THREE.CanvasTexture(c);
+}
+const glowTex = makeGlowTexture();
+const coreGlow = new THREE.Sprite(new THREE.SpriteMaterial({
+  map:glowTex, color:TEAL, transparent:true, opacity:0.8,
+  blending:THREE.AdditiveBlending, depthWrite:false
+}));
+coreGlow.scale.set(560,560,1);
+coreGlow.position.set(0,0,-260);
+scene.add(coreGlow);
+
+/* ---- central wireframe core (signature element) ---- */
+const coreGroup = new THREE.Group();
+coreGroup.position.set(0,0,-260);
+scene.add(coreGroup);
+
+const icoGeo = new THREE.IcosahedronGeometry(78, 1);
+const icoEdges = new THREE.EdgesGeometry(icoGeo);
+const icoLines = new THREE.LineSegments(icoEdges, new THREE.LineBasicMaterial({ color:TEAL, transparent:true, opacity:0.85 }));
+coreGroup.add(icoLines);
+
+const innerGeo = new THREE.IcosahedronGeometry(50, 0);
+const innerMesh = new THREE.Mesh(innerGeo, new THREE.MeshBasicMaterial({
+  color:TEAL, transparent:true, opacity:0.06, blending:THREE.AdditiveBlending
+}));
+coreGroup.add(innerMesh);
+
+const ringGeo = new THREE.TorusGeometry(130, 0.6, 8, 90);
+const ring1 = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:COPPER, transparent:true, opacity:0.5 }));
+ring1.rotation.x = Math.PI/2.3;
+coreGroup.add(ring1);
+const ring2 = new THREE.Mesh(ringGeo.clone(), new THREE.MeshBasicMaterial({ color:TEAL, transparent:true, opacity:0.3 }));
+ring2.rotation.x = Math.PI/2.3;
+ring2.rotation.y = Math.PI/3;
+ring2.scale.set(1.35,1.35,1.35);
+coreGroup.add(ring2);
+
+/* ---- drifting debris scattered along the depth path ---- */
+const debris = [];
+const debrisGeoPool = [
+  new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(14,0)),
+  new THREE.EdgesGeometry(new THREE.TorusGeometry(12,3,6,16)),
+  new THREE.EdgesGeometry(new THREE.OctahedronGeometry(15,0)),
+];
+const DEBRIS_COUNT = 34;
+for(let i=0;i<DEBRIS_COUNT;i++){
+  const geo = debrisGeoPool[i % debrisGeoPool.length];
+  const mat = new THREE.LineBasicMaterial({
+    color: i % 3 === 0 ? COPPER : TEAL,
+    transparent:true, opacity:0.35 + Math.random()*0.25
+  });
+  const mesh = new THREE.LineSegments(geo, mat);
+  const z = -400 - Math.random()*(TOTAL_DEPTH-500);
+  mesh.position.set((Math.random()-0.5)*640, (Math.random()-0.5)*420, z);
+  const s = 0.7 + Math.random()*1.8;
+  mesh.scale.set(s,s,s);
+  mesh.userData.spin = (Math.random()-0.5)*0.006;
+  mesh.userData.spin2 = (Math.random()-0.5)*0.004;
+  scene.add(mesh);
+  debris.push(mesh);
+}
+
+/* ---- resize ---- */
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+/* ---- scroll → camera depth ---- */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let targetZ = 0;
+let currentZ = 0;
+
+function updateScrollTarget(){
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const frac = max > 0 ? window.scrollY / max : 0;
+  targetZ = -frac * (TOTAL_DEPTH - 600);
+  document.getElementById('tele-z').textContent = String(Math.round(-targetZ)).padStart(4,'0');
+}
+window.addEventListener('scroll', updateScrollTarget, { passive:true });
+updateScrollTarget();
+
+/* ---- mouse parallax ---- */
+let mouseX = 0, mouseY = 0;
+window.addEventListener('mousemove', (e)=>{
+  mouseX = (e.clientX / window.innerWidth - 0.5);
+  mouseY = (e.clientY / window.innerHeight - 0.5);
+});
+
+/* ---- render loop ---- */
+function animate(){
+  requestAnimationFrame(animate);
+
+  currentZ += (targetZ - currentZ) * (reduceMotion ? 1 : 0.06);
+  camera.position.z = currentZ;
+
+  if(!reduceMotion){
+    const drift = Math.sin(currentZ * 0.0009) * 30;
+    camera.position.x += (drift - camera.position.x) * 0.04;
+
+    const lookX = mouseX * 60;
+    const lookY = -mouseY * 40;
+    camera.rotation.y += ((lookX*0.008) - camera.rotation.y) * 0.05;
+    camera.rotation.x += ((lookY*0.008) - camera.rotation.x) * 0.05;
+
+    coreGroup.rotation.y += 0.0024;
+    coreGroup.rotation.x += 0.0009;
+    ring1.rotation.z += 0.002;
+    ring2.rotation.z -= 0.0015;
+    debris.forEach(m=>{ m.rotation.x += m.userData.spin; m.rotation.y += m.userData.spin2; });
+    const pulse = 0.75 + Math.sin(Date.now()*0.0012)*0.08;
+    coreGlow.material.opacity = pulse * 0.8;
+  }
+
+  renderer.render(scene, camera);
+}
+animate();
+
+/* ================= SCROLL REVEALS ================= */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('in');
+  });
+}, { threshold:0.2 });
+revealEls.forEach(el=>io.observe(el));
+
+/* ================= NAV DOTS + TELEMETRY LABEL ================= */
+const sections = Array.from(document.querySelectorAll('main > section'));
+const dotNav = document.getElementById('dotNav');
+const teleSec = document.getElementById('tele-sec');
+
+sections.forEach((sec, i)=>{
+  if(!sec.id) sec.id = 'sec-' + i;
+  const btn = document.createElement('button');
+  btn.setAttribute('aria-label', sec.dataset.label || sec.id);
+  btn.innerHTML = '<span class="label">'+ (sec.dataset.label || sec.id) +'</span>';
+  btn.addEventListener('click', ()=> sec.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' }));
+  dotNav.appendChild(btn);
+});
+const dotButtons = Array.from(dotNav.children);
+
+const secObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const idx = sections.indexOf(entry.target);
+      dotButtons.forEach(b=>b.classList.remove('active'));
+      if(dotButtons[idx]) dotButtons[idx].classList.add('active');
+      teleSec.textContent = (entry.target.dataset.label || '').toUpperCase();
+    }
+  });
+}, { threshold:0.5 });
+sections.forEach(s=>secObserver.observe(s));
+</script>
+</body>
+</html>
