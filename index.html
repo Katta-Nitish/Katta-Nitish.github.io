@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Katta Nitish Goud — AI/ML Engineer</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <!--
   Portfolio for Katta Nitish Goud.
   - Content lives inline in each <section> below — edit text directly there.
@@ -60,6 +64,48 @@
   }
 
   main{ position:relative; z-index:2; }
+
+  .grain{
+    position:fixed; inset:0; z-index:3;
+    pointer-events:none;
+    opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:overlay;
+  }
+
+  /* ---------- HUD cursor ---------- */
+  .hud-cursor{
+    position:fixed; top:0; left:0; z-index:9999;
+    width:26px; height:26px;
+    border:1px solid var(--teal);
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    transition:width .2s, height .2s, border-color .2s, opacity .2s;
+    opacity:0;
+  }
+  .hud-cursor::before, .hud-cursor::after{
+    content:'';
+    position:absolute;
+    background:var(--teal);
+  }
+  .hud-cursor::before{ top:50%; left:-6px; width:6px; height:1px; transform:translateY(-50%); }
+  .hud-cursor::after{ top:-6px; left:50%; width:1px; height:6px; transform:translateX(-50%); }
+  .hud-cursor.show{ opacity:.85; }
+  .hud-cursor.hover{ width:52px; height:52px; border-color:var(--copper); background:rgba(255,154,92,0.06); }
+  .hud-dot{
+    position:fixed; top:0; left:0; z-index:9999;
+    width:4px; height:4px; border-radius:50%;
+    background:var(--teal);
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    opacity:0;
+  }
+  .hud-dot.show{ opacity:1; }
+
+  @media (hover:none), (pointer:coarse){
+    .hud-cursor, .hud-dot{ display:none; }
+  }
 
   /* ---------- HUD chrome ---------- */
 
@@ -155,6 +201,20 @@
     font-size:clamp(3rem, 10vw, 7.5rem);
     letter-spacing:-.02em;
     line-height:.95;
+    background:linear-gradient(100deg, var(--ink) 30%, var(--teal) 45%, var(--ink) 60%);
+    background-size:220% 100%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation:sheen 7s ease-in-out infinite;
+  }
+  @keyframes sheen{
+    0%{ background-position:200% 0; }
+    50%{ background-position:0% 0; }
+    100%{ background-position:200% 0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-name{ animation:none; background-position:0 0; }
   }
   .hero-tagline{
     margin-top:22px;
@@ -236,6 +296,7 @@
     width:100%;
     max-width:1280px;
     align-items:center;
+    perspective:1200px;
   }
   .project:nth-of-type(even) .project-inner{
     direction:rtl;
@@ -307,9 +368,11 @@
     display:block;
     text-decoration:none;
     min-height:420px;
-    transition:border-color .3s, background .3s;
+    transition:border-color .3s, background .3s, transform .12s ease-out, box-shadow .3s;
+    transform-style:preserve-3d;
+    will-change:transform;
   }
-  .p-visual:hover{ border-color:var(--teal); background:linear-gradient(160deg, rgba(91,227,201,0.16), rgba(255,154,92,0.05) 60%), var(--panel); }
+  .p-visual:hover{ border-color:var(--teal); background:linear-gradient(160deg, rgba(91,227,201,0.16), rgba(255,154,92,0.05) 60%), var(--panel); box-shadow:0 20px 60px -20px rgba(91,227,201,0.25); }
   .p-visual:hover .repo-pill{ color:var(--teal); border-color:var(--teal); }
   .p-visual::before{
     content:'';
@@ -397,21 +460,40 @@
     margin-bottom:26px;
   }
   #contact p{ color:var(--ink-dim); margin-bottom:34px; max-width:44ch; }
+  .resume-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:var(--font-mono); font-size:13px; letter-spacing:.1em;
+    color:var(--void); background:var(--teal);
+    padding:15px 30px; border-radius:3px;
+    text-decoration:none; margin-bottom:38px;
+    border:1px solid var(--teal);
+    transition:background .25s, color .25s, transform .2s, box-shadow .25s;
+  }
+  .resume-btn:hover, .resume-btn:focus-visible{
+    background:transparent; color:var(--teal);
+    transform:translateY(-2px);
+    box-shadow:0 12px 34px -12px rgba(91,227,201,0.55);
+    outline:none;
+  }
+  .resume-btn svg{ width:15px; height:15px; }
   .contact-links{
     display:flex; gap:28px; flex-wrap:wrap; justify-content:center;
     font-family:var(--font-mono); font-size:13px; letter-spacing:.05em;
   }
   .contact-links a{
+    display:inline-flex; align-items:center; gap:8px;
     color:var(--ink);
     text-decoration:none;
     border-bottom:1px solid var(--line);
     padding-bottom:4px;
     transition:color .25s, border-color .25s;
   }
+  .contact-links a svg{ width:14px; height:14px; opacity:.7; }
   .contact-links a:hover, .contact-links a:focus-visible{
     color:var(--teal); border-color:var(--teal);
     outline:none;
   }
+  .contact-links a:hover svg{ opacity:1; }
   footer{
     text-align:center;
     padding:40px 0 60px;
@@ -437,6 +519,9 @@
 
 <canvas id="scene"></canvas>
 <div class="vignette"></div>
+<div class="grain"></div>
+<div class="hud-cursor" id="hudCursor"></div>
+<div class="hud-dot" id="hudDot"></div>
 
 <div class="mark">K<span>·</span>NG // PORTFOLIO</div>
 <div class="telemetry" id="telemetry">
@@ -473,9 +558,9 @@
         </p>
       </div>
       <div class="spec-sheet reveal">
-        <div><span class="num">73%</span>Answer-relevancy gain from a self-correcting RAG loop</div>
-        <div><span class="num">100%</span>Routing accuracy reached with cross-encoder reranking</div>
-        <div><span class="num">06</span>Agentic AI systems shipped, start to finish</div>
+        <div><span class="num" data-count="73" data-suffix="%">0%</span>Answer-relevancy gain from a self-correcting RAG loop</div>
+        <div><span class="num" data-count="100" data-suffix="%">0%</span>Routing accuracy reached with cross-encoder reranking</div>
+        <div><span class="num" data-count="6" data-pad="2">00</span>Agentic AI systems shipped, start to finish</div>
       </div>
     </div>
   </section>
@@ -714,10 +799,23 @@
     <span class="eyebrow reveal">// 03 — Contact</span>
     <h2 class="reveal">Let's build<br>something.</h2>
     <p class="reveal">Open to AI/ML roles and interesting agentic-systems problems. Reach out — I read everything myself.</p>
+    <a class="resume-btn reveal" href="Nitish_Resume.pdf" download>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+      DOWNLOAD RESUME
+    </a>
     <div class="contact-links reveal">
-      <a href="mailto:nitishgoud69@gmail.com">nitishgoud69@gmail.com</a>
-      <a href="https://github.com/Katta-Nitish" target="_blank" rel="noopener">GITHUB</a>
-      <a href="https://www.linkedin.com/in/katta-nitish-goud" target="_blank" rel="noopener">LINKEDIN</a>
+      <a href="mailto:nitishgoud69@gmail.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg>
+        nitishgoud69@gmail.com
+      </a>
+      <a href="https://github.com/Katta-Nitish" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55v-1.94c-3.2.7-3.87-1.54-3.87-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.51-1.47.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.24 2.76.12 3.05.74.8 1.19 1.82 1.19 3.08 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.66.79.55A10.52 10.52 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+        GITHUB
+      </a>
+      <a href="https://www.linkedin.com/in/katta-nitish-goud" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.11 20.45H3.56V9h3.55v11.45z"/></svg>
+        LINKEDIN
+      </a>
     </div>
   </section>
 
@@ -940,6 +1038,65 @@ const secObserver = new IntersectionObserver((entries)=>{
   });
 }, { threshold:0.5 });
 sections.forEach(s=>secObserver.observe(s));
+
+/* ================= HUD CURSOR ================= */
+const hudCursor = document.getElementById('hudCursor');
+const hudDot = document.getElementById('hudDot');
+const isFinePointer = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+if(isFinePointer){
+  let cx=0, cy=0, dx=0, dy=0;
+  window.addEventListener('mousemove', (e)=>{
+    dx = e.clientX; dy = e.clientY;
+    hudDot.style.left = dx+'px'; hudDot.style.top = dy+'px';
+    hudCursor.classList.add('show'); hudDot.classList.add('show');
+  });
+  (function followCursor(){
+    cx += (dx-cx)*0.18; cy += (dy-cy)*0.18;
+    hudCursor.style.left = cx+'px'; hudCursor.style.top = cy+'px';
+    requestAnimationFrame(followCursor);
+  })();
+  document.querySelectorAll('a, button, .p-visual').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>hudCursor.classList.add('hover'));
+    el.addEventListener('mouseleave', ()=>hudCursor.classList.remove('hover'));
+  });
+
+  /* ---- project card tilt ---- */
+  document.querySelectorAll('.p-visual').forEach(card=>{
+    card.addEventListener('mousemove', (e)=>{
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left)/r.width - 0.5;
+      const py = (e.clientY - r.top)/r.height - 0.5;
+      card.style.transform = `rotateY(${px*6}deg) rotateX(${-py*6}deg) translateZ(0)`;
+    });
+    card.addEventListener('mouseleave', ()=>{ card.style.transform = ''; });
+  });
+}
+
+/* ================= COUNT-UP STATS ================= */
+const counters = document.querySelectorAll('.num[data-count]');
+const countIO = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(!entry.isIntersecting) return;
+    countIO.unobserve(entry.target);
+    const el = entry.target;
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || '';
+    const pad = el.dataset.pad ? parseInt(el.dataset.pad,10) : 0;
+    if(reduceMotion){ el.textContent = String(target).padStart(pad,'0') + suffix; return; }
+    const dur = 1400;
+    const start = performance.now();
+    function tick(now){
+      const p = Math.min((now-start)/dur, 1);
+      const eased = 1 - Math.pow(1-p, 3);
+      const val = Math.round(target*eased);
+      el.textContent = String(val).padStart(pad,'0') + suffix;
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}, { threshold:0.4 });
+counters.forEach(c=>countIO.observe(c));
 </script>
 </body>
 </html>
